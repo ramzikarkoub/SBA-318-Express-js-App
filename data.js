@@ -112,4 +112,4 @@ const users = [
   },
 ];
 
-export default { posts, products, users };
+module.exports = { posts, products, users };
