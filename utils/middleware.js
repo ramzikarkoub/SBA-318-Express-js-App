@@ -17,4 +17,11 @@ const generateNewId = (req, res, next) => {
   next();
 };
 
-module.exports = { parsId, generateNewId };
+const errorHandler = (err, req, res, next) => {
+  console.error(err);
+  if (err.status) {
+    return res.status(err.status).send({ message: err.message });
+  }
+};
+
+module.exports = { parsId, generateNewId, errorHandler };

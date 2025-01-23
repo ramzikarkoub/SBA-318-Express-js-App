@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router();
 
 const { posts } = require("../utils/data");
-const { parsId, generateNewId } = require("../utils/middleware");
+const { parsId, generateNewId, errorHandler } = require("../utils/middleware");
+router.use(errorHandler);
 
 router.get("/", (req, res) => {
-  console.log(posts);
+  // console.log(posts);
   res.status(200).send(posts);
 });
 
@@ -13,13 +14,18 @@ router.get("/:id", parsId, (req, res) => {
   res.status(200).send(req.post);
 });
 
-router.post("/", generateNewId, (req, res) => {
+router.post("/", generateNewId, (req, res, next) => {
   const { newId } = req;
+  // console.log(newId);
   const post = req.body;
   const newPost = { id: newId, ...post };
-  console.log(post);
+  // console.log(post);
   posts.push(newPost);
-  if (!post) return res.sendStatus(401);
+  if (!post.title || !post.content || !post.authorId || !post.date) {
+    const err = new Error("Missing fields");
+    err.status = 400;
+    return next(err);
+  }
   res.status(200).send(posts);
 });
 
@@ -31,7 +37,7 @@ router.put("/:id", parsId, (req, res) => {
   }
   Object.assign(post, updatedPost);
   res.status(200).send(posts);
-  console.log(post);
+  // console.log(post);
 });
 
 module.exports = router;
