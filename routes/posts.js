@@ -3,7 +3,6 @@ const router = express.Router();
 
 const { posts } = require("../utils/data");
 const { parsId, generateNewId, errorHandler } = require("../utils/middleware");
-router.use(errorHandler);
 
 router.get("/:id", parsId, (req, res) => {
   res.status(200).send(req.post);
