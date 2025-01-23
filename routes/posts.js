@@ -5,6 +5,7 @@ const { posts } = require("../utils/data");
 const { parsId, generateNewId, errorHandler } = require("../utils/middleware");
 router.use(errorHandler);
 
+// GET
 router.get("/", (req, res) => {
   // console.log(posts);
   res.status(200).send(posts);
@@ -14,6 +15,7 @@ router.get("/:id", parsId, (req, res) => {
   res.status(200).send(req.post);
 });
 
+// POST
 router.post("/", generateNewId, (req, res, next) => {
   const { newId } = req;
   // console.log(newId);
@@ -29,6 +31,7 @@ router.post("/", generateNewId, (req, res, next) => {
   res.status(200).send(posts);
 });
 
+// PUT
 router.put("/:id", parsId, (req, res) => {
   const { post } = req;
   const updatedPost = req.body;
@@ -38,6 +41,17 @@ router.put("/:id", parsId, (req, res) => {
   Object.assign(post, updatedPost);
   res.status(200).send(posts);
   // console.log(post);
+});
+
+// DELETE
+router.delete("/:id", parsId, (req, res) => {
+  const { parsedId } = req;
+  const postIndex = posts.findIndex((post) => post.id === parsedId);
+  if (postIndex === -1) {
+    return res.status(404).send({ message: "Post not found" });
+  }
+  posts.splice(postIndex, 1);
+  res.status(200).send({ message: "Post deleted successfully" });
 });
 
 module.exports = router;
