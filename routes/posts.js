@@ -1,30 +1,37 @@
 const express = require("express");
 const router = express.Router();
 
-const { posts } = require("../data");
+const { posts } = require("../utils/data");
+const { parsId, generateNewId } = require("../utils/middleware");
 
-router.get("/", () => {
-  console.log("Postssss");
+router.get("/", (req, res) => {
+  console.log(posts);
+  res.status(200).send(posts);
 });
 
-router.get("/:id", (req, res) => {
-  const id = req.params.id;
-  const parsedId = parseInt(id);
-  const post = posts.find((post) => post.id === parsedId);
+router.get("/:id", parsId, (req, res) => {
+  res.status(200).send(req.post);
+});
+
+router.post("/", generateNewId, (req, res) => {
+  const { newId } = req;
+  const post = req.body;
+  const newPost = { id: newId, ...post };
   console.log(post);
+  posts.push(newPost);
+  if (!post) return res.sendStatus(401);
+  res.status(200).send(posts);
+});
+
+router.put("/:id", parsId, (req, res) => {
+  const { post } = req;
+  const updatedPost = req.body;
   if (!post) {
     return res.status(404).send({ message: "post does Not exist" });
   }
-  return res.status(200).send(post);
-});
-router.post("/", (req, res) => {
-  const post = req.body;
-  const newPosts = posts.push(post);
-  if (!req.user) return res.sendStatus(401);
-  req.logout((err) => {
-    if (err) return res.sendStatus(400);
-    res.status(200).send(newPosts);
-  });
+  Object.assign(post, updatedPost);
+  res.status(200).send(posts);
+  console.log(post);
 });
 
 module.exports = router;
