@@ -5,23 +5,40 @@ const { posts } = require("../utils/data");
 const { parsId, generateNewId, errorHandler } = require("../utils/middleware");
 router.use(errorHandler);
 
-// GET
-router.get("/", (req, res) => {
-  // console.log(posts);
-  res.status(200).send(posts);
-});
-
 router.get("/:id", parsId, (req, res) => {
   res.status(200).send(req.post);
+});
+
+// GET (All posts and filtered by query parameters)
+router.get("/", (req, res) => {
+  let filteredPosts = [...posts];
+
+  if (req.query.authorId) {
+    filteredPosts = filteredPosts.filter(
+      (post) => post.authorId === parseInt(req.query.authorId)
+    );
+  }
+
+  if (req.query.date) {
+    filteredPosts = filteredPosts.filter(
+      (post) => post.date === req.query.date
+    );
+  }
+
+  if (req.query.title) {
+    filteredPosts = filteredPosts.filter((post) =>
+      post.title.toLowerCase().includes(req.query.title.toLowerCase())
+    );
+  }
+
+  res.status(200).send(filteredPosts); // Send filtered posts
 });
 
 // POST
 router.post("/", generateNewId, (req, res, next) => {
   const { newId } = req;
-  // console.log(newId);
   const post = req.body;
   const newPost = { id: newId, ...post };
-  // console.log(post);
   posts.push(newPost);
   if (!post.title || !post.content || !post.authorId || !post.date) {
     const err = new Error("Missing fields");
@@ -40,7 +57,6 @@ router.put("/:id", parsId, (req, res) => {
   }
   Object.assign(post, updatedPost);
   res.status(200).send(posts);
-  // console.log(post);
 });
 
 // DELETE
