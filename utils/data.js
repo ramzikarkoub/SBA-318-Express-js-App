@@ -36,4 +36,80 @@ const posts = [
   },
 ];
 
-module.exports = { posts };
+const products = [
+  {
+    id: 1,
+    name: "Laptop Pro",
+    price: 1200.99,
+    category: "Electronics",
+    stock: 15,
+  },
+  {
+    id: 2,
+    name: "Wireless Headphones",
+    price: 199.99,
+    category: "Accessories",
+    stock: 50,
+  },
+  {
+    id: 3,
+    name: "Gaming Chair",
+    price: 349.99,
+    category: "Furniture",
+    stock: 8,
+  },
+  {
+    id: 4,
+    name: "Smartwatch",
+    price: 249.99,
+    category: "Wearables",
+    stock: 25,
+  },
+  {
+    id: 5,
+    name: "Electric Kettle",
+    price: 39.99,
+    category: "Kitchen",
+    stock: 100,
+  },
+];
+
+const users = [
+  {
+    id: 1,
+    name: "Alice Johnson",
+    email: "alice.johnson@example.com",
+    age: 25,
+    isActive: true,
+  },
+  {
+    id: 2,
+    name: "Bob Smith",
+    email: "bob.smith@example.com",
+    age: 32,
+    isActive: false,
+  },
+  {
+    id: 3,
+    name: "Catherine Green",
+    email: "catherine.green@example.com",
+    age: 28,
+    isActive: true,
+  },
+  {
+    id: 4,
+    name: "Daniel Lee",
+    email: "daniel.lee@example.com",
+    age: 35,
+    isActive: true,
+  },
+  {
+    id: 5,
+    name: "Evelyn Brown",
+    email: "evelyn.brown@example.com",
+    age: 30,
+    isActive: false,
+  },
+];
+
+module.exports = { posts, products, users };

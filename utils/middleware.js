@@ -3,11 +3,11 @@ const { posts } = require("./data");
 const parsId = (req, res, next) => {
   const id = req.params.id;
   const parsedId = parseInt(id);
-  const post = posts.find((post) => post.id === parsedId);
-  if (!post) {
+  const info = posts.find((i) => i.id === parsedId);
+  if (!info) {
     return res.status(404).send({ message: "Post not found" });
   }
-  req.post = post;
+  req.info = info;
   req.parsedId = parsedId;
   next();
 };

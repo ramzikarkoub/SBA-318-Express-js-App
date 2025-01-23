@@ -5,7 +5,7 @@ const { posts } = require("../utils/data");
 const { parsId, generateNewId, errorHandler } = require("../utils/middleware");
 
 router.get("/:id", parsId, (req, res) => {
-  res.status(200).send(req.post);
+  res.status(200).send(req.info);
 });
 
 // GET (All posts and filtered by query parameters)
@@ -49,12 +49,12 @@ router.post("/", generateNewId, (req, res, next) => {
 
 // PUT
 router.put("/:id", parsId, (req, res) => {
-  const { post } = req;
+  const { info } = req;
   const updatedPost = req.body;
-  if (!post) {
+  if (!info) {
     return res.status(404).send({ message: "post does Not exist" });
   }
-  Object.assign(post, updatedPost);
+  Object.assign(info, updatedPost);
   res.status(200).send(posts);
 });
 
